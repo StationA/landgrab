@@ -1,1 +1,5 @@
 click
+objectpath
+pyyaml
+requests
+tornado
