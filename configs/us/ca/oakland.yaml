@@ -1,0 +1,14 @@
+source:
+  uri: https://data.oaklandnet.com/api/geospatial/qvww-ev2w?method=export&format=GeoJSON
+  format: geojson
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        properties.building_id: $.properties.bldgid3
+        geometry: $.geometry
+
+sink:
+  uri: /tmp/oakland.jsonlines
+  format: jsonlines

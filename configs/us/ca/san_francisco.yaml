@@ -1,0 +1,11 @@
+source:
+  uri: https://data.sfgov.org/api/geospatial/72ai-zege?method=export&format=GeoJSON
+  format: geojson
+  license: https://opendatacommons.org/licenses/pddl/1.0/
+
+transform:
+  tasks: []
+
+sink:
+  uri: /tmp/san_francisco.jsonlines
+  format: jsonlines
