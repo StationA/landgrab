@@ -5,10 +5,13 @@ from pip.download import PipSession
 
 
 SESSION = PipSession()
-INSTALL_REQUIRES = [str(r.req) for r in
-                    parse_requirements('./requirements.txt', session=SESSION)]
-TESTS_REQUIRE = [str(r.req) for r in
-                 parse_requirements('./test_requirements.txt', session=SESSION)]
+
+
+def requirements(fn):
+    return [str(r.req) for r in parse_requirements(fn, session=SESSION)]
+
+INSTALL_REQUIRES = requirements('./requirements.txt')
+TESTS_REQUIRE = requirements('./test_requirements.txt')
 
 
 setup(
@@ -26,6 +29,9 @@ setup(
         ],
     },
     install_requires=INSTALL_REQUIRES,
+    extras_require={
+        'geo': requirements('landgrab/contrib/geo/requirements.txt')
+    },
     tests_require=TESTS_REQUIRE,
     license='License :: Other/Proprietary License',
 )
