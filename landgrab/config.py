@@ -11,6 +11,7 @@ FORMATS = {
     'json': import_module('landgrab.format.json'),
     'jsonlines': import_module('landgrab.format.jsonlines'),
     'geojson': import_module('landgrab.format.geojson'),
+    'shp': import_module('landgrab.format.shp'),
 }
 SOURCES = {
     'http': import_class('landgrab.source.http.HTTPSource'),

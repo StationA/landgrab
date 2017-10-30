@@ -1,5 +1,6 @@
 click
 objectpath
+pyshp==1.2.3
 pyyaml
 requests
 tornado
