@@ -12,5 +12,5 @@ class FileSource(BaseSource):
     def pull(self):
         return self.f.read()
 
-    def __exit__(self):
+    def __exit__(self, *args):
         return self.f.close()
