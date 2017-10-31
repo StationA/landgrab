@@ -4,6 +4,10 @@ from landgrab.transform import BaseTask
 
 
 def _maybe_insert_nested(d, k, v):
+    """
+    Tries to insert a value into a dictionary at a nested key using dot notation, e.g. "a.b" would
+    refer to the key "b" inside of the dictionary at key "a" inside of a dictionary
+    """
     if '.' in k:
         sub_dict_k, k = k.split('.', 1)
         if sub_dict_k not in d:
@@ -15,6 +19,16 @@ def _maybe_insert_nested(d, k, v):
 
 
 class ProjectTask(BaseTask):
+    """
+    Projects an input dictionary into a new dictionary; similar to a SQL-like SELECT statement. The
+    schema should be specified as a dictionary where the key is the output key and the value is an
+    ObjectPath expression that refers to the input key, e.g.:
+
+    - type: project
+      schema:
+        newkey: $.properties.oldkey
+
+    """
     def __init__(self, schema):
         self.schema = schema
 
@@ -27,6 +41,15 @@ class ProjectTask(BaseTask):
 
 
 class ExtractTask(BaseTask):
+    """
+    Extracts a single value from the input dictionary, as specified by the provided ObjectPath
+    expression, e.g.:
+
+    - type: extract
+      expression: $.properties.geometry
+
+    Note that the resulting value becomes the output item that is processed by any subsequent tasks
+    """
     def __init__(self, expression):
         self.expression = expression
 
@@ -36,11 +59,19 @@ class ExtractTask(BaseTask):
 
 
 class RenameKeyTask(BaseTask):
-    def __init__(self, key, new_key):
-        self.key = key
-        self.new_key = new_key
+    """
+    Renames a set of keys to a set of new keys, as specified by the `map` property, e.g.:
+
+    - type: rename
+      map:
+        oldkey: newkey
+        oldkey2: newkey2
+    """
+    def __init__(self, map):
+        self.map = map
 
     def __call__(self, item):
-        item[self.new_key] = item[self.key]
-        del item[self.key]
+        for old_key, new_key in self.map.items():
+            item[new_key] = item[old_key]
+            del item[old_key]
         return item

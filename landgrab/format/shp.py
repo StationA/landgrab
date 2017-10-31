@@ -15,6 +15,12 @@ def _find_shp(d):
 
 
 def deserialize(raw):
+    """
+    Deserializes a raw stream of data from a ZIP archive containing shape files. The ZIP must at
+    least include a .shp, .dbf, and .shx file to work using this format.
+
+    The resulting output stream emits GeoJSON-style Feature dictionaries.
+    """
     outfolder = tempfile.mkdtemp()
     try:
         with zipfile.ZipFile(raw) as zf:
@@ -29,3 +35,7 @@ def deserialize(raw):
             }
     finally:
         shutil.rmtree(outfolder)
+
+
+def serialize(item):
+    raise NotImplementedError

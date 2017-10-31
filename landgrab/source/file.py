@@ -2,6 +2,9 @@ from landgrab.source import BaseSource
 
 
 class FileSource(BaseSource):
+    """
+    An input source for local files
+    """
     def __init__(self, uri):
         self.fn = uri[len('file://'):]
 

@@ -23,16 +23,28 @@ def _create_transform(transform_cfg):
 
 
 class Engine(object):
+    """
+    The engine that orchestrates the end-to-end LandGrab job
+    """
     def __init__(self, cfg):
         self.cfg = cfg
 
     def plan(self):
+        """
+        Builds out the plan for how to execute the job from the configuration contents
+        """
         source = _create_source(self.cfg['source'])
         transform = _create_transform(self.cfg.get('transform', {}))
         sink = _create_sink(self.cfg['sink'])
         return source, transform, sink
 
     def run(self):
+        """
+        Actually runs the job in the following steps:
+          1. Pulls the input source
+          2. Applies any transformation tasks
+          3. Saves the transformed data to the sink
+        """
         source, transform, sink = self.plan()
         source_data = source.pull()
         transformed_data = transform.apply(source_data)
