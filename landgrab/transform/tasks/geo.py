@@ -12,7 +12,7 @@ class BufferGeometryTask(BaseTask):
         Given a GeoJSON Feature, buffers the geometry
         """
         geom = item['geometry']
-        s = shape(geom).buffer(0)
+        s = shape(geom).buffer(self.buffer_size)
         buffered_geom = mapping(s)
         item['geometry'] = buffered_geom
         return item
