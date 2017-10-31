@@ -10,7 +10,6 @@ def import_class(class_path):
 
 DEFAULT_FORMAT = 'raw'
 FORMATS = {
-    'json': import_module('landgrab.format.json'),
     'jsonlines': import_module('landgrab.format.jsonlines'),
     'geojson': import_module('landgrab.format.geojson'),
     'raw': import_module('landgrab.format.raw'),
