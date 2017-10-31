@@ -1,4 +1,5 @@
 from importlib import import_module
+import os
 import yaml
 
 
@@ -31,10 +32,15 @@ SINKS = {
 }
 
 
+def _render(config_file):
+    with open(config_file) as f:
+        return os.path.expandvars(f.read())
+
+
 # TODO: Implement configuration class
 def load(config_file):
-    with open(config_file) as f:
-        return yaml.load(f)
+    config = _render(config_file)
+    return yaml.load(config)
 
 
 def get_deserializer(format):

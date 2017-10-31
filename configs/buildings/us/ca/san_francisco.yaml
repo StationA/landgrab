@@ -1,0 +1,19 @@
+source:
+  uri: https://data.sfgov.org/api/geospatial/72ai-zege?method=export&format=GeoJSON
+  format: geojson
+  license: https://opendatacommons.org/licenses/pddl/1.0/
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        properties.building_id: $.properties.objectid
+        properties.height_m: $.properties.hgt_median_m
+        geometry: $.geometry
+
+sink:
+  uri: s3://stationa-shapes/buildings/us/ca/san_francisco.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+  format: jsonlines

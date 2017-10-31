@@ -7,8 +7,12 @@ transform:
     - type: project
       schema:
         properties.building_id: $.properties.bldgid3
+        properties.stories: $.properties.nostory
         geometry: $.geometry
 
 sink:
-  uri: /tmp/oakland.jsonlines
+  uri: s3://stationa-shapes/buildings/us/ca/oakland.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
   format: jsonlines
