@@ -3,5 +3,6 @@ ijson
 objectpath
 pyshp==1.2.3
 pyyaml
+shapely
 simplejson
 smart_open

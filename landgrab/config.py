@@ -25,6 +25,7 @@ TASKS = {
     'extract': import_class('landgrab.transform.tasks.dict.ExtractTask'),
     'rename_key': import_class('landgrab.transform.tasks.dict.RenameKeyTask'),
     'project': import_class('landgrab.transform.tasks.dict.ProjectTask'),
+    'buffer_geometry': import_class('landgrab.transform.tasks.geo.BufferGeometryTask'),
 }
 SINKS = {
     'file': import_class('landgrab.sink.file.FileSink'),
