@@ -8,6 +8,7 @@ def import_class(class_path):
     return getattr(import_module(mod), clazz)
 
 
+DEFAULT_FORMAT = 'raw'
 FORMATS = {
     'json': import_module('landgrab.format.json'),
     'jsonlines': import_module('landgrab.format.jsonlines'),
