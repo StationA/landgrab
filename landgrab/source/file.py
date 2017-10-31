@@ -10,7 +10,7 @@ class FileSource(BaseSource):
         return self
 
     def pull(self):
-        return self.f.read()
+        return self.f
 
     def __exit__(self, *args):
         return self.f.close()

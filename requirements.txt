@@ -1,7 +1,7 @@
 click
-jinja2
+ijson
 objectpath
 pyshp==1.2.3
 pyyaml
-requests
-tornado
+simplejson
+smart_open

@@ -1,14 +1,20 @@
-import requests
+from urllib2 import urlopen
 
 from landgrab.source import BaseSource
 
 
 class HTTPSource(BaseSource):
-    def __init__(self, uri, method='GET', request_timeout=60 * 60 * 24):
+    def __init__(self, uri, method='GET'):
         self.uri = uri
         self.method = method
-        self.request_timeout = request_timeout
+
+    def __enter__(self):
+        # TODO: Figure out if we can just use smart_open here instead
+        self.download_stream = urlopen(self.uri)
+        return self
 
     def pull(self):
-        res = requests.request(self.method, self.uri)
-        return res.content
+        return self.download_stream
+
+    def __exit__(self, *args):
+        self.download_stream.close()

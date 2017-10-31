@@ -1,9 +1,9 @@
 from __future__ import absolute_import
-import json
+import simplejson as json
 
 
 def deserialize(raw):
-    for line in raw.splitlines():
+    for line in raw:
         yield json.loads(line)
 
 

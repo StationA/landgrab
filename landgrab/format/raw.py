@@ -1,5 +1,6 @@
 def deserialize(raw):
-    yield raw
+    for chunk in raw:
+        yield chunk
 
 
 def serialize(item):

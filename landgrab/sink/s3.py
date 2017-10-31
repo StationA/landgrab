@@ -1,5 +1,4 @@
-import boto3
-from StringIO import StringIO
+import smart_open
 import urlparse
 import urllib
 
@@ -19,16 +18,8 @@ def _parse_uri(uri):
     return username, password, netloc, path
 
 
-def _create_client(access_key_id, secret_access_key):
-    """
-    Creates a boto3 s3 client
-    """
-    client = boto3.client(
-        's3',
-        aws_access_key_id=access_key_id,
-        aws_secret_access_key=secret_access_key
-    )
-    return client
+def _compose_uri(access_key_id, secret_access_key, bucket, key):
+    return 's3://%s:%s@%s/%s' % (access_key_id, secret_access_key, bucket, key)
 
 
 class S3Sink(BaseSink):
@@ -40,13 +31,12 @@ class S3Sink(BaseSink):
         self.key = key
 
     def __enter__(self):
-        self.client = _create_client(self.access_key_id, self.secret_access_key)
-        self.upload_buf = StringIO()
+        s3_uri = _compose_uri(self.access_key_id, self.secret_access_key, self.bucket, self.key)
+        self.upload_stream = smart_open.smart_open(s3_uri, mode='wb')
         return self
 
     def save(self, item):
-        self.upload_buf.write(item)
+        self.upload_stream.write(item)
 
     def __exit__(self, *args):
-        self.upload_buf.seek(0)
-        self.client.upload_fileobj(self.upload_buf, self.bucket, self.key)
+        self.upload_stream.close()

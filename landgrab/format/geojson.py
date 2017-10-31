@@ -1,10 +1,10 @@
 from __future__ import absolute_import
-import json
+import ijson
 
 
 def deserialize(raw):
-    obj = json.loads(raw)
-    for feature in obj['features']:
+    features = ijson.items(raw, 'features.item')
+    for feature in features:
         yield feature
 
 
