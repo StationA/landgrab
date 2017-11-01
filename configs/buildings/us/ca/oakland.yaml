@@ -6,6 +6,7 @@ transform:
   tasks:
     - type: project
       schema:
+        type: $.type
         properties.building_id: $.properties.bldgid3
         properties.stories: $.properties.nostory
         geometry: $.geometry

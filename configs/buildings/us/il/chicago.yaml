@@ -1,0 +1,17 @@
+source:
+  uri: https://data.cityofchicago.org/api/geospatial/hz9b-7nh8?method=export&format=GeoJSON
+  format: geojson
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        type: $.type
+        geometry: $.geometry
+
+sink:
+  uri: s3://stationa-shapes/buildings/us/il/chicago.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+  format: jsonlines

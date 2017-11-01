@@ -1,0 +1,18 @@
+source:
+  uri: https://bostonopendata-boston.opendata.arcgis.com/datasets/492746f09dde475285b01ae7fc95950e_1.zip
+  format: shp
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        type: $.type
+        properties.building_id: $.properties.BUILDING_I
+        geometry: $.geometry
+
+sink:
+  uri: s3://stationa-shapes/buildings/us/ma/boston.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+  format: jsonlines

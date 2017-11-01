@@ -1,0 +1,18 @@
+source:
+  uri: http://gis-cupertino.opendata.arcgis.com/datasets/452e4cc13f184a78ac803eba88766c78_9.zip
+  format: shp
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        type: $.type
+        properties: $.properties
+        geometry: $.geometry
+
+sink:
+  uri: s3://stationa-shapes/buildings/us/ca/cupertino.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+  format: jsonlines
