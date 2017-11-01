@@ -1,4 +1,5 @@
-from urllib2 import urlopen
+import tempfile
+import urllib
 
 from landgrab.source import BaseSource
 
@@ -14,11 +15,13 @@ class HTTPSource(BaseSource):
     def __enter__(self):
         # TODO: Figure out if we can just use smart_open here instead
         # TODO: Figure out how to support different methods
-        self.download_stream = urlopen(self.uri)
+        self.f = tempfile.NamedTemporaryFile(delete=True)
+        urllib.urlretrieve(self.uri, self.f.name)
         return self
 
     def pull(self):
-        return self.download_stream
+        return self.f
 
     def __exit__(self, *args):
-        self.download_stream.close()
+        self.f.close()
+        urllib.urlcleanup()
