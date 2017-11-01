@@ -7,7 +7,9 @@ transform:
     - type: project
       schema:
         type: $.type
-        properties: $.properties
+        properties.building_id: $.properties.bin
+        properties.height_ft: $.properties.heightroof
+        properties.year_built: $.properties.cnstrct_yr
         geometry: $.geometry
 
 sink:

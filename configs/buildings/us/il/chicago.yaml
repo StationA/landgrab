@@ -7,6 +7,9 @@ transform:
     - type: project
       schema:
         type: $.type
+        properties.building_id: $.properties.bldg_id
+        properties.stories: $.properties.stories
+        properties.year_built: $.properties.year_built
         geometry: $.geometry
 
 sink:

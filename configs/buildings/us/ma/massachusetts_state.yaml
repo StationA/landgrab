@@ -1,0 +1,18 @@
+source:
+  uri: http://download.massgis.digital.mass.gov/shapefiles/structures/structures_poly.zip
+  format: shp
+
+transform:
+  tasks:
+    - type: project
+      schema:
+        type: $.type
+        properties.building_id: $.properties.STRUCT_ID
+        geometry: $.geometry
+
+sink:
+  uri: s3://stationa-shapes/buildings/us/ma/massachusetts_state.jsonlines
+  params:
+    access_key_id: $AWS_ACCESS_KEY_ID
+    secret_access_key: $AWS_SECRET_ACCESS_KEY
+  format: jsonlines

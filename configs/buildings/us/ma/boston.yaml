@@ -8,6 +8,10 @@ transform:
       schema:
         type: $.type
         properties.building_id: $.properties.BUILDING_I
+        properties.building_type: $.properties.IEL_TYPE
+        properties.height_ft: $.properties.BUILDING_H
+        properties.base_elevation_ft: $.properties.BASE_ELEVA
+        properties.roof_elevation_ft: $.properties.ROOF_ELEVA
         geometry: $.geometry
 
 sink:
