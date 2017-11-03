@@ -1,0 +1,15 @@
+source:
+  uri: https://data.sfgov.org/api/geospatial/72ai-zege?method=export&format=GeoJSON
+  format: geojson
+
+transform:
+  batch_size: 10000
+  tasks:
+    - type: project
+      schema:
+        type: $.type
+        geometry: $.geometry
+
+sink:
+  uri: multi.jsonlines
+  format: jsonlines

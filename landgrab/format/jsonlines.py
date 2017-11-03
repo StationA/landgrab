@@ -14,4 +14,4 @@ def serialize(item):
     """
     Serializes each item as a JSON-encoded string with a line ending
     """
-    return json.dumps(item) + '\n'
+    return json.dumps(item)

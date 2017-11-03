@@ -7,10 +7,7 @@ class Sink(object):
         self.serializer = serializer
 
     def save(self, transformed_data):
-        with self.sink_impl as sink:
-            for item in transformed_data:
-                serialized = self.serializer(item)
-                sink.save(serialized)
+        transformed_data.map(self.serializer).to_textfiles('/tmp/test-*.jsonlines')
 
 
 class BaseSink(object):
