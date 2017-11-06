@@ -33,5 +33,5 @@ setup(
         'geo': requirements('landgrab/contrib/geo/requirements.txt')
     },
     tests_require=TESTS_REQUIRE,
-    license='License :: Other/Proprietary License',
+    license='License :: OSI Approved :: MIT License',
 )
