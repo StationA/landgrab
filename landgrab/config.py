@@ -13,11 +13,13 @@ DEFAULT_FORMAT = 'raw'
 FORMATS = {
     'jsonlines': 'landgrab.format.jsonlines.JSONLinesFormat',
     'raw': 'landgrab.format.raw.RawFormat',
+    'rows': 'landgrab.format.rows.RowsFormat',
 }
 SOURCES = {
     'http': 'landgrab.source.http.HTTPSource',
     'https': 'landgrab.source.http.HTTPSource',
     'file': 'landgrab.source.file.FileSource',
+    'sql': 'landgrab.source.sql.SQLSource',
     's3': 'landgrab.source.s3.S3Source',
 }
 TASKS = {

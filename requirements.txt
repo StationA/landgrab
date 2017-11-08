@@ -1,5 +1,7 @@
 click
 objectpath
+psycopg2
 pyyaml
 simplejson
 smart_open
+sqlalchemy
