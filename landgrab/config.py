@@ -19,7 +19,6 @@ SOURCES = {
     'http': 'landgrab.source.http.HTTPSource',
     'https': 'landgrab.source.http.HTTPSource',
     'file': 'landgrab.source.file.FileSource',
-    'sql': 'landgrab.source.sql.SQLSource',
     's3': 'landgrab.source.s3.S3Source',
 }
 TASKS = {

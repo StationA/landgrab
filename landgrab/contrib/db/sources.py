@@ -31,12 +31,11 @@ class SQLSource(BaseSource):
 
     def __enter__(self):
         sql_uri = _compose_sql_uri(self.uri, self.dialect, self.driver)
-        sql_session = _start_session(sql_uri)
-        self.download_stream = sql_session.execute(self.query)
+        self.session = _start_session(sql_uri)
         return self
 
     def pull(self):
-        return self.download_stream
+        return self.session.execute(self.query)
 
     def __exit__(self, *args):
-        self.download_stream.close()
+        self.session.close()
