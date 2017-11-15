@@ -1,28 +1,35 @@
-from elasticsearch import Elasticsearch
+from elasticsearch import helpers, Elasticsearch
 from objectpath import Tree
 
 from landgrab.sink import BaseSink
 
 
+def _generate_docs(docs, index, doc_type, doc_id_field):
+    for doc in docs:
+        t = Tree(doc)
+        yield {
+            '_index': index,
+            '_type': doc_type,
+            '_id': t.execute(doc_id_field),
+            '_source': doc
+        }
+
+
 class ElasticSink(BaseSink):
-    def __init__(self, uri, index, doc_type, doc_id_field):
+    def __init__(self, uri, index, doc_type, doc_id_field, chunk_size=500):
         self.uri = uri[len('elastic://'):]
         self.index = index
         self.doc_type = doc_type
         self.doc_id_field = doc_id_field
+        self.chunk_size = chunk_size
 
     def __enter__(self):
         self.es = Elasticsearch(hosts=self.uri)
         return self
 
-    def save(self, item):
-        t = Tree(item)
-        self.es.index(
-            index=self.index,
-            doc_type=self.doc_type,
-            id=t.execute(self.doc_id_field),
-            body=item
-        )
+    def save_stream(self, items):
+        docs = _generate_docs(items, self.index, self.doc_type, self.doc_id_field)
+        helpers.streaming_bulk(self.es, docs, chunk_size=self.chunk_size)
 
     def __exit__(self, *args):
         pass

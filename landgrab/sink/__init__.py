@@ -6,11 +6,13 @@ class Sink(object):
         self.sink_impl = sink_impl
         self.serializer = serializer
 
+    def serialized_data(self, transformed_data):
+        for item in transformed_data:
+            yield self.serializer(item)
+
     def save(self, transformed_data):
         with self.sink_impl as sink:
-            for item in transformed_data:
-                serialized = self.serializer(item)
-                sink.save(serialized)
+            sink.save_stream(self.serialized_data(transformed_data))
 
 
 class BaseSink(object):
@@ -18,6 +20,10 @@ class BaseSink(object):
 
     def __enter__(self):
         return self
+
+    def save_stream(self, items):
+        for item in items:
+            self.save(item)
 
     def save(self, item):
         raise NotImplementedError
