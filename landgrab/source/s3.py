@@ -1,4 +1,6 @@
+import shutil
 import smart_open
+import tempfile
 import urlparse
 import urllib
 
@@ -39,11 +41,15 @@ class S3Source(BaseSource):
 
     def __enter__(self):
         s3_uri = _compose_uri(self.access_key_id, self.secret_access_key, self.bucket, self.key)
+        self.f = tempfile.NamedTemporaryFile(delete=True)
         self.download_stream = smart_open.smart_open(s3_uri, mode='rb')
         return self
 
     def pull(self):
-        return self.download_stream
+        shutil.copyfileobj(self.download_stream, self.f)
+        self.f.flush()
+        self.f.seek(0)
+        return self.f
 
     def __exit__(self, *args):
-        self.download_stream.close()
+        self.f.close()
