@@ -24,12 +24,12 @@ class ElasticSink(BaseSink):
         self.chunk_size = chunk_size
 
     def __enter__(self):
-        self.es = Elasticsearch(hosts=self.uri)
+        self.es = Elasticsearch(hosts=self.uri, timeout=300)
         return self
 
     def save_stream(self, items):
         docs = _generate_docs(items, self.index, self.doc_type, self.doc_id_field)
-        helpers.streaming_bulk(self.es, docs, chunk_size=self.chunk_size)
+        helpers.bulk(self.es, docs, chunk_size=self.chunk_size, refresh=True)
 
     def __exit__(self, *args):
         pass
