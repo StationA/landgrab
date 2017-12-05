@@ -1,5 +1,4 @@
 click
-jsonlines
 objectpath
 pyyaml
 simplejson

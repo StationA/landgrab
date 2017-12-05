@@ -1,8 +1,7 @@
 import codecs
-import jsonlines
+import json
 import requests
 import tempfile
-import urllib
 
 from landgrab.source import BaseSource
 
@@ -11,19 +10,19 @@ class HTTPSource(BaseSource):
     """
     An input source for HTTP-based network data
     """
-    def __init__(self, uri, method='GET', paginate=False, results_per_page_param=None,
-                 results_per_page=None, page_index_param=None, max_pages=None, current_page=0,
-                 query_params=None, results_key='results', username=None, password=None):
+    def __init__(self, uri, method='GET', query_params=None, results_key=None, username=None,
+                 password=None, pagination=None):
         self.uri = uri
         self.method = method
-        self.paginate = paginate
-
-        # Vars only necessary if paginate is `True`
-        self.results_per_page = results_per_page
-        self.results_per_page_param = results_per_page_param
-        self.page_index_param = page_index_param
-        self.max_pages = max_pages
-        self.current_page = current_page
+        if pagination:
+            self.paginate = True
+            self.results_per_page = pagination.get('results_per_page', 25)
+            self.results_per_page_param = pagination.get('results_per_page_param', 'pageCount')
+            self.page_offset_param = pagination.get('page_offset_param', 'pageIndex')
+            self.max_pages = pagination.get('max_pages', 10)
+            self.current_page = pagination.get('current_page', 0)
+        else:
+            self.paginate = False
         if query_params:
             self.query_params = query_params
         else:
@@ -32,48 +31,57 @@ class HTTPSource(BaseSource):
         self.username = username
         self.password = password
 
-    def __enter__(self):
-        # TODO: Figure out if we can just use smart_open here instead
-        # TODO: Figure out how to support different methods
-        self.f = tempfile.NamedTemporaryFile(delete=True)
-        if self.paginate:
-            with codecs.open(self.f.name, mode='w', encoding='utf-8') as tmpf:
-                writer = jsonlines.Writer(tmpf)
-                for query_params in self._query_param_generator():
-                    if self.username:
-                        r = requests.get(
-                            self.uri,
-                            auth=(self.username, self.password),
-                            params=query_params
-                        )
-                    else:
-                        r = requests.get(
-                            self.uri,
-                            params=query_params
-                        )
-                    if r.status_code < 400:
-                        results = r.json()
-                        for tariff in results[self.results_key]:
-                            writer.write(tariff)
+    def _make_request(self, query_params=None):
+        if not query_params:
+            query_params = self.query_params
+        if self.username:
+            r = requests.get(
+                self.uri,
+                auth=(self.username, self.password),
+                params=query_params
+            )
         else:
-            urllib.urlretrieve(self.uri, self.f.name)
-        return self
+            r = requests.get(
+                self.uri,
+                params=query_params
+            )
+        return r
 
-    def _query_param_generator(self):
-        page_index = self.current_page
+    def _pagination_query_param_generator(self):
+        page_offset = self.current_page
         for i in range(self.max_pages):
             query_params = {
                 self.results_per_page_param: self.results_per_page,
-                self.page_index_param: page_index
+                self.page_offset_param: page_offset
             }
             query_params.update(self.query_params)
             yield query_params
-            page_index += self.results_per_page
+            page_offset += self.results_per_page
+
+    def __enter__(self):
+        self.f = tempfile.NamedTemporaryFile(delete=True)
+        with codecs.open(self.f.name, mode='w', encoding='utf-8') as tmpf:
+            if self.paginate:
+                for query_params in self._pagination_query_param_generator():
+                    r = self._make_request(query_params)
+                    if r.status_code < 400:
+                        response = r.json()
+                        if self.results_key:
+                            results = response[self.results_key]
+                        else:
+                            results = response
+                        for result in results:
+                            tmpf.write(json.dumps(result))
+                            tmpf.write('\n')
+            else:
+                r = self._make_request()
+                if r.status_code < 400:
+                    response = r.json()
+                    tmpf.write(json.dumps(response))
+            return self
 
     def pull(self):
         return self.f
 
     def __exit__(self, *args):
         self.f.close()
-        if not self.paginate:
-            urllib.urlcleanup()
