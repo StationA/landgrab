@@ -30,7 +30,8 @@ setup(
     },
     install_requires=INSTALL_REQUIRES,
     extras_require={
-        'geo': requirements('landgrab/contrib/geo/requirements.txt')
+        'geo': requirements('./requirements_geo.txt'),
+        'db': requirements('./requirements_db.txt')
     },
     tests_require=TESTS_REQUIRE,
     license='License :: OSI Approved :: MIT License',
