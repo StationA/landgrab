@@ -6,5 +6,6 @@ def load():
     FORMATS['shp'] = 'landgrab.contrib.geo.formats.ShapefileFormat'
     SINKS['elastic'] = 'landgrab.contrib.elastic.sinks.ElasticSink'
     SOURCES['sql'] = 'landgrab.contrib.db.sources.SQLSource'
+    SOURCES['http_paginated'] = 'landgrab.contrib.http_paginated.sources.HTTPPaginatedSource'
     TASKS['buffer_geometry'] = 'landgrab.contrib.geo.tasks.BufferGeometryTask'
     TASKS['project_geometry'] = 'landgrab.contrib.geo.tasks.ProjectGeometryTask'
