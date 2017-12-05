@@ -2,28 +2,44 @@ import os
 import tempfile
 import requests
 import jsonlines
-# from tornado.gen import coroutine
-# import tornado.httpclient as httpclient
 
-# from landgrab.source import BaseSource
+from landgrab.source import BaseSource
 
 
 APP_ID = os.environ['GENABILITY_APP_ID']
 APP_KEY = os.environ['GENABILITY_APP_KEY']
 
 
-def process_uri(raw):
+def _process_uri(raw):
     return raw[len('http_paginated://'):]
 
 
-class HTTPPaginatedSource(object):
+def _sanitize(d):
+    """
+    Sanitizes strings
+    """
+    sanitized = {}
+    for k, v in d.iteritems():
+        if isinstance(v, dict):
+            sanitized[k] = _sanitize(v)
+        elif isinstance(v, list):
+            sanitized[k] = [_sanitize(x) for x in v]
+        elif isinstance(v, basestring):
+            try:
+                sanitized[k] = unicode(v.strip()).encode('ascii')
+            except:
+                sanitized[k] = None
+    return sanitized
+
+
+class HTTPPaginatedSource(BaseSource):
     """
     An input for paginated HTTP data that allows the page to be controlled through query params
     """
     def __init__(self, uri, page_count_param, page_count, page_index_param, max_pages,
                  current_page=0, status_check_name='not_provided', status_check_success_name=None,
                  query_params=None):
-        self.uri = process_uri(uri)
+        self.uri = _process_uri(uri)
         self.page_count = page_count
         self.page_count_param = page_count_param
         self.page_index_param = page_index_param
@@ -46,6 +62,7 @@ class HTTPPaginatedSource(object):
                     results = r.json()
                     if results.get(self.status_check_name) == self.status_check_success_name:
                         for tariff in results['results']:
+                            tariff = _sanitize(tariff)
                             writer.write(tariff)
         return self
 
