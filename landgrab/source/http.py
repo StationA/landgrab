@@ -7,6 +7,11 @@ import logging
 from landgrab.source import BaseSource
 
 
+logging.basicConfig()
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+
+
 class HTTPSource(BaseSource):
     """
     An input source for HTTP-based network data
@@ -46,6 +51,7 @@ class HTTPSource(BaseSource):
                 self.uri,
                 params=query_params
             )
+        LOGGER.debug('making http call to %s', r.url)
         return r
 
     def _pagination_query_param_generator(self):
@@ -76,8 +82,10 @@ class HTTPSource(BaseSource):
                                 tmpf.write(json.dumps(result))
                                 tmpf.write('\n')
                         else:
+                            LOGGER.debug('breaking on zero results')
                             break
                     else:
+                        LOGGER.debug('breaking on error: %s', r.status_code)
                         break
             else:
                 r = self._make_request()
