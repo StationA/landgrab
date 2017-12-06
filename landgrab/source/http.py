@@ -2,6 +2,7 @@ import codecs
 import json
 import requests
 import tempfile
+import logging
 
 from landgrab.source import BaseSource
 
@@ -17,8 +18,8 @@ class HTTPSource(BaseSource):
         if pagination:
             self.paginate = True
             self.results_per_page = pagination.get('results_per_page', 25)
-            self.results_per_page_param = pagination.get('results_per_page_param', 'pageCount')
-            self.page_offset_param = pagination.get('page_offset_param', 'pageIndex')
+            self.results_per_page_param = pagination.get('results_per_page_param', None)
+            self.page_offset_param = pagination.get('page_offset_param', None)
             self.max_pages = pagination.get('max_pages', 10)
             self.current_page = pagination.get('current_page', 0)
         else:
@@ -70,9 +71,14 @@ class HTTPSource(BaseSource):
                             results = response[self.results_key]
                         else:
                             results = response
-                        for result in results:
-                            tmpf.write(json.dumps(result))
-                            tmpf.write('\n')
+                        if results:
+                            for result in results:
+                                tmpf.write(json.dumps(result))
+                                tmpf.write('\n')
+                        else:
+                            break
+                    else:
+                        break
             else:
                 r = self._make_request()
                 if r.status_code < 400:
