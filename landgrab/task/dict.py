@@ -79,7 +79,7 @@ class RenameKeyTask(BaseTask):
 
 class FilterTask(BaseTask):
     """
-    Filters the input dictionaries based on the value of a specific key as specified by
+    Filters the input dictionaries based on the value (or values) of a specific key as specified by
     the provided ObjectPath expression; similar to a SQL-like WHERE statement, e.g.:
 
     - type: filter
@@ -94,7 +94,13 @@ class FilterTask(BaseTask):
     def __call__(self, item):
         t = Tree(item)
         v = t.execute(self.expression)
-        if v == self.value:
-            return item
+        if type(self.value) == list:
+            if v in self.value:
+                return item
+            else:
+                return None
         else:
-            return None
+            if v == self.value:
+                return item
+            else:
+                return None
