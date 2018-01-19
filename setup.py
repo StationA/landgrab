@@ -30,8 +30,9 @@ setup(
     },
     install_requires=INSTALL_REQUIRES,
     extras_require={
-        'geo': requirements('./requirements_geo.txt'),
-        'db': requirements('./requirements_db.txt')
+        'db': requirements('./requirements_db.txt'),
+        'elastic': requirements('./requirements_elastic.txt'),
+        'geo': requirements('./requirements_geo.txt')
     },
     tests_require=TESTS_REQUIRE,
     license='License :: OSI Approved :: MIT License',
