@@ -32,6 +32,7 @@ setup(
     extras_require={
         'db': requirements('./requirements_db.txt'),
         'elastic': requirements('./requirements_elastic.txt'),
+        'xls': requirements('./requirements_xls.txt'),
         'geo': requirements('./requirements_geo.txt')
     },
     tests_require=TESTS_REQUIRE,
