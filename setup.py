@@ -16,7 +16,7 @@ TESTS_REQUIRE = requirements('./test_requirements.txt')
 
 setup(
     name='landgrab',
-    version='0.1.8',
+    version='0.1.9',
     description='Geospatial data hoarding system',
     author='Station A',
     author_email='software@stationa.com',
