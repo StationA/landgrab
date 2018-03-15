@@ -9,7 +9,7 @@ class XLSFormat(BaseFormat):
         """
         Deserializes from a raw input stream a new stream of XLS rows
         """
-        df = pd.read_excel(raw, skiprows=1)
+        df = pd.read_excel(raw)
         for row in simplejson.loads(df.to_json(orient='records')):
             yield row
 
