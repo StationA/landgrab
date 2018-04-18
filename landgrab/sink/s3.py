@@ -1,6 +1,5 @@
 import smart_open
-import urlparse
-import urllib
+from urllib.parse import unquote_plus, urlsplit
 
 
 from landgrab.sink import BaseSink
@@ -10,9 +9,9 @@ def _parse_uri(uri):
     """
     Parses an S3 URI
     """
-    parts = urlparse.urlsplit(uri)
+    parts = urlsplit(uri)
     netloc = parts.hostname
-    path = urllib.unquote_plus(parts.path[1:])
+    path = unquote_plus(parts.path[1:])
     username = urllib.unquote_plus(parts.username) if parts.username else None
     password = urllib.unquote_plus(parts.password) if parts.password else None
     return username, password, netloc, path
