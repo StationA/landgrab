@@ -6,7 +6,7 @@ Geospatial data hoarding system
 
 ### Requirements
 
-* Python 2.7+
+* Python 3.4+
 
 ### Install from PyPI (recommended)
 
