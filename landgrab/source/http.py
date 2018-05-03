@@ -50,7 +50,6 @@ class HTTPSource(BaseSource):
                 self.uri,
                 params=query_params
             )
-        LOGGER.debug('Making HTTP request to: %s', r.url)
         return r
 
     def _pagination_query_param_generator(self):
@@ -89,8 +88,9 @@ class HTTPSource(BaseSource):
             else:
                 r = self._make_request()
                 if r.status_code < 400:
-                    response = r.json()
-                    tmpf.write(json.dumps(response))
+                    for chunk in r.iter_content(chunk_size=1024):
+                        if chunk:
+                            tmpf.write(chunk)
                 else:
                     LOGGER.debug('Error[%s] on HTTP request to: %s', (r.status_code, r.url))
             return self

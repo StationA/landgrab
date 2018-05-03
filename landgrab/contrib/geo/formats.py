@@ -13,8 +13,7 @@ def _find_shp(d):
         for f in files:
             fpath = os.path.join(dirpath, f)
             if f.endswith('.shp'):
-                return fpath
-    raise IOError('No .shp file found in directory %s' % d)
+                yield fpath
 
 
 class GeoJSONFormat(BaseFormat):
@@ -42,14 +41,14 @@ class ShapefileFormat(BaseFormat):
         try:
             with zipfile.ZipFile(raw) as zf:
                 zf.extractall(outfolder)
-            shpfn = _find_shp(outfolder)
-            shp = shapefile.Reader(shpfn)
-            fields = [field[0] for field in shp.fields[1:]]
-            for shape_record in shp.iterShapeRecords():
-                yield {
-                    'geometry': shape_record.shape.__geo_interface__,
-                    'properties': dict(zip(fields, shape_record.record))
-                }
+            for shpfn in _find_shp(outfolder):
+                shp = shapefile.Reader(shpfn)
+                fields = [field[0] for field in shp.fields[1:]]
+                for shape_record in shp.iterShapeRecords():
+                    yield {
+                        'geometry': shape_record.shape.__geo_interface__,
+                        'properties': dict(zip(fields, shape_record.record))
+                    }
         finally:
             shutil.rmtree(outfolder)
 

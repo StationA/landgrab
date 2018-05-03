@@ -9,7 +9,7 @@ class FileSource(BaseSource):
         self.fn = uri[len('file://'):]
 
     def __enter__(self):
-        self.f = open(self.fn)
+        self.f = open(self.fn, mode='rb')
         return self
 
     def pull(self):
