@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
-from pip.download import PipSession
-
-
-SESSION = PipSession()
 
 
 def requirements(fn):
-    return [str(r.req) for r in parse_requirements(fn, session=SESSION)]
-
-INSTALL_REQUIRES = requirements('./requirements.txt')
-TESTS_REQUIRE = requirements('./test_requirements.txt')
+    with open(fn, 'r') as f:
+        return [str(r) for r in f]
 
 
 setup(
@@ -28,13 +21,13 @@ setup(
             'landgrab=landgrab.__main__:main'
         ],
     },
-    install_requires=INSTALL_REQUIRES,
+    install_requires=requirements('./requirements.txt'),
     extras_require={
         'db': requirements('./requirements_db.txt'),
         'elastic': requirements('./requirements_elastic.txt'),
         'xls': requirements('./requirements_xls.txt'),
         'geo': requirements('./requirements_geo.txt')
     },
-    tests_require=TESTS_REQUIRE,
+    tests_require=requirements('./test_requirements.txt'),
     license='License :: OSI Approved :: MIT License',
 )
