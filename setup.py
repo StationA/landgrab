@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 
 def requirements(fn):
-    with open(fn, 'r') as f:
-        return [str(r) for r in f]
+    with open(fn) as f:
+        return f.read().splitlines()
 
 
 setup(
