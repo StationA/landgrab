@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
-from pip.download import PipSession
-
-
-SESSION = PipSession()
+from pip._internal.req import parse_requirements
+from pip._internal.download import PipSession
 
 
 def requirements(fn):
     return [str(r.req) for r in parse_requirements(fn, session=SESSION)]
 
+
+SESSION = PipSession()
 INSTALL_REQUIRES = requirements('./requirements.txt')
 TESTS_REQUIRE = requirements('./test_requirements.txt')
 
