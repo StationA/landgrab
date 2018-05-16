@@ -18,7 +18,7 @@ def _create_source(source_cfg):
 
 
 def _create_transform(transform_cfg):
-    tasks = map(create_task, transform_cfg.get('tasks', []))
+    tasks = list(map(create_task, transform_cfg.get('tasks', [])))
     return Transform(tasks)
 
 
