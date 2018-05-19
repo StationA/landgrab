@@ -18,6 +18,37 @@ def _maybe_insert_nested(d, k, v):
         d[k] = v
 
 
+class JoinTask(BaseTask):
+    """
+    Joins string components (nested keys or arbitrary strings) using a delimiter,
+    creates a new string, then nests the new string in a new key defined by the provided
+    ObjectPath expression
+    - type: join
+      schema:
+        newkey:
+          delimiter: ', '
+          components:
+            - $.properties.key1
+            - $.properties.key2
+            - 'arbitrary string'
+    """
+    def __init__(self, schema):
+        self.schema = schema
+
+    def __call__(self, item):
+        t = Tree(item)
+        for new_key, params in self.schema.items():
+            values_to_join = []
+            for component in params['components']:
+                if component.startswith('$'):
+                    component = t.execute(component)
+                if component:
+                    values_to_join.append(str(component))
+            new_value = params['delimiter'].join(values_to_join)
+            _maybe_insert_nested(item, new_key, new_value)
+        return item
+
+
 class ProjectTask(BaseTask):
     """
     Projects an input dictionary into a new dictionary; similar to a SQL-like SELECT statement. The

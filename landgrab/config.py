@@ -16,16 +16,17 @@ FORMATS = {
     'rows': 'landgrab.format.rows.RowsFormat',
 }
 SOURCES = {
+    'file': 'landgrab.source.file.FileSource',
     'http': 'landgrab.source.http.HTTPSource',
     'https': 'landgrab.source.http.HTTPSource',
-    'file': 'landgrab.source.file.FileSource',
     's3': 'landgrab.source.s3.S3Source',
 }
 TASKS = {
     'extract': 'landgrab.task.dict.ExtractTask',
-    'rename_key': 'landgrab.task.dict.RenameKeyTask',
-    'project': 'landgrab.task.dict.ProjectTask',
     'filter': 'landgrab.task.dict.FilterTask',
+    'join': 'landgrab.task.dict.JoinTask',
+    'project': 'landgrab.task.dict.ProjectTask',
+    'rename_key': 'landgrab.task.dict.RenameKeyTask',
 }
 SINKS = {
     'file': 'landgrab.sink.file.FileSink',
