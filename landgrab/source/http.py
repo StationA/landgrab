@@ -1,4 +1,3 @@
-import codecs
 import json
 import requests
 import tempfile
@@ -65,7 +64,7 @@ class HTTPSource(BaseSource):
 
     def __enter__(self):
         self.f = tempfile.NamedTemporaryFile(delete=True)
-        with codecs.open(self.f.name, mode='w', encoding='utf-8') as tmpf:
+        with open(self.f.name, mode='wb') as tmpf:
             if self.paginate:
                 for query_params in self._pagination_query_param_generator():
                     r = self._make_request(query_params)
