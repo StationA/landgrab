@@ -9,7 +9,7 @@ def requirements(fn):
 
 setup(
     name='landgrab',
-    version='0.1.14',
+    version='0.1.15',
     description='Geospatial data hoarding system',
     author='Station A',
     author_email='software@stationa.com',
