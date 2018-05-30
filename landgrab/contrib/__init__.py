@@ -9,3 +9,4 @@ def load():
     SOURCES['sql'] = 'landgrab.contrib.db.sources.SQLSource'
     TASKS['buffer_geometry'] = 'landgrab.contrib.geo.tasks.BufferGeometryTask'
     TASKS['project_geometry'] = 'landgrab.contrib.geo.tasks.ProjectGeometryTask'
+    TASKS['simplify_geometry'] = 'landgrab.contrib.geo.tasks.SimplifyGeometryTask'

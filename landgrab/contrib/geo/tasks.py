@@ -53,3 +53,27 @@ class ProjectGeometryTask(BaseTask):
         projected_geom = mapping(s)
         item['geometry'] = projected_geom
         return item
+
+
+class SimplifyGeometryTask(BaseTask):
+    """
+    Simplifies the geometry of a GeoJSON feature by a configurable tolerance amound, e.g.:
+
+    - type: simplify_geometry
+      tolerance: 0.05
+      preserve_topology: False
+
+    This is useful when complex geometries have unnecessary vertices that don't significantly alter
+    their geometric representation. When `preserve_topology` is set to `False`, Shapely will use
+    the much quicker Douglas-Peucker simplification algorithm.
+    """
+    def __init__(self, tolerance, preserve_topology=False):
+        self.tolerance = tolerance
+        self.preserve_topology = preserve_topology
+
+    def __call__(self, item):
+        geom = item['geometry']
+        s = shape(geom).simplify(self.tolerance, self.preserve_topology)
+        simplified_geom = mapping(s)
+        item['geometry'] = simplified_geom
+        return item
