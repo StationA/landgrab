@@ -21,10 +21,14 @@ class BufferGeometryTask(BaseTask):
 
     def __call__(self, item):
         geom = item['geometry']
-        s = shape(geom).buffer(self.buffer_size)
-        buffered_geom = mapping(s)
-        item['geometry'] = buffered_geom
-        return item
+        try:
+            s = shape(geom).buffer(self.buffer_size)
+            if s.is_valid:
+                buffered_geom = mapping(s)
+                item['geometry'] = buffered_geom
+                return item
+        except IndexError:
+            pass
 
 
 class ProjectGeometryTask(BaseTask):
