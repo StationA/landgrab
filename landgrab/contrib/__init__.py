@@ -5,6 +5,8 @@ def load():
     FORMATS['geojson'] = 'landgrab.contrib.geo.formats.GeoJSONFormat'
     FORMATS['shp'] = 'landgrab.contrib.geo.formats.ShapefileFormat'
     FORMATS['xls'] = 'landgrab.contrib.xls.formats.XLSFormat'
+    FORMATS['csv'] = 'landgrab.contrib.xls.formats.XLSFormat'
+    FORMATS['xlsx'] = 'landgrab.contrib.xls.formats.XLSFormat'
     SINKS['elastic'] = 'landgrab.contrib.elastic.sinks.ElasticSink'
     SOURCES['sql'] = 'landgrab.contrib.db.sources.SQLSource'
     TASKS['buffer_geometry'] = 'landgrab.contrib.geo.tasks.BufferGeometryTask'
