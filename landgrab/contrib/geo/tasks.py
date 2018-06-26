@@ -22,9 +22,11 @@ def _google_geocode(address, google_api_key):
     res = requests.get(url)
     if res.status_code == 200:
         body = json.loads(res.text)
-        location = body['results'][0]['geometry']['location']
-        coords = [location['lng'], location['lat']]
-        return coords
+        results = body['results']
+        if len(results) > 0:
+            location = body['results'][0]['geometry']['location']
+            coords = [location['lng'], location['lat']]
+            return coords
 
 
 class BufferGeometryTask(BaseTask):
