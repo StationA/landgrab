@@ -1,4 +1,4 @@
-from landgrab.config import FORMATS, SINKS, SOURCES, TASKS
+from landgrab.config import FORMATS, SOURCES, TASKS
 
 
 def load():
@@ -7,9 +7,7 @@ def load():
     FORMATS['xls'] = 'landgrab.contrib.xls.formats.XLSFormat'
     FORMATS['csv'] = 'landgrab.contrib.xls.formats.XLSFormat'
     FORMATS['xlsx'] = 'landgrab.contrib.xls.formats.XLSFormat'
-    SINKS['elastic'] = 'landgrab.contrib.elastic.sinks.ElasticSink'
     SOURCES['sql'] = 'landgrab.contrib.db.sources.SQLSource'
     TASKS['buffer_geometry'] = 'landgrab.contrib.geo.tasks.BufferGeometryTask'
     TASKS['project_geometry'] = 'landgrab.contrib.geo.tasks.ProjectGeometryTask'
     TASKS['simplify_geometry'] = 'landgrab.contrib.geo.tasks.SimplifyGeometryTask'
-    TASKS['geocode'] = 'landgrab.contrib.geo.tasks.GeocodeTask'

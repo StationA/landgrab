@@ -30,8 +30,18 @@ pip install .
 
 # Usage
 
-TBW
+```
+Usage: landgrab [OPTIONS]
 
+  Geospatial data hoarding system
+
+Options:
+  --version               Show the version and exit.
+  -e, --env-file PATH
+  -c, --config-file PATH  [required]
+  -d, --debug
+  -h, --help              Show this message and exit.
+```
 
 # Contributing
 

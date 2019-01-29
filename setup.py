@@ -24,7 +24,6 @@ setup(
     install_requires=requirements('./requirements.txt'),
     extras_require={
         'db': requirements('./requirements_db.txt'),
-        'elastic': requirements('./requirements_elastic.txt'),
         'xls': requirements('./requirements_xls.txt'),
         'geo': requirements('./requirements_geo.txt')
     },
