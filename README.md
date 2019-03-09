@@ -4,6 +4,8 @@
 
 Geospatial data hoarding system
 
+## Installation
+
 ### Requirements
 
 * Python 3.4+
@@ -28,7 +30,7 @@ cd landgrab
 pip install .
 ```
 
-# Usage
+## Usage
 
 ```
 Usage: landgrab [OPTIONS]
@@ -43,7 +45,13 @@ Options:
   -h, --help              Show this message and exit.
 ```
 
-# Contributing
+## Contributing
+
+When contributing to this repository, please follow the steps below:
+
+1. Fork the repository
+1. Submit your patch in one commit, or a series of well-defined commits
+1. Submit your pull request and make sure you reference the issue you are addressing
 
 ### Installing for development
 
